@@ -78,9 +78,10 @@ class NumericalAbstraction:
     # function (which can be 'mean', 'max', 'min', 'median', 'std', 'slope')
     def aggregate_value(self,data, window_size, aggregation_function):
         window = str(window_size) + 's'
+        print(window_size, aggregation_function)
         # Compute the values and return the result.
         if aggregation_function == 'mean':
-            return data.rolling(window, min_periods=window_size).mean()
+            return data.rolling(window).mean()
         elif aggregation_function == 'max':
             return data.rolling(window, min_periods=window_size).max()
         elif aggregation_function == 'min':
@@ -88,9 +89,9 @@ class NumericalAbstraction:
         elif aggregation_function == 'median':
             return data.rolling(window, min_periods=window_size).median()
         elif aggregation_function == 'std':
-            return data.rolling(window, min_periods=window_size).std()
+            return data.rolling(2, min_periods=1).apply(np.std)
         elif aggregation_function == 'slope':
-            return data.rolling(window, min_periods=window_size).apply(self.get_slope)
+            return data.rolling(window, min_periods=1).apply(self.get_slope)
         
 
         else:

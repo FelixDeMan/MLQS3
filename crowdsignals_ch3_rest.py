@@ -151,16 +151,16 @@ def main():
         # Let us apply a lowpass filter and reduce the importance of the data above 1.5 Hz
 
        # Determine the sampling frequency.
-        fs = 40# float(1000)/milliseconds_per_instance
-        cutoff = 1.5
+        fs = 1/60 # Hz
+        cutoff = 1.5 # Hz
         print('fs = ', fs)
         print('cut_off = ', cutoff)
-
-        for col in periodic_measurements:
-            dataset = LowPass.low_pass_filter(
-                dataset, col, fs, cutoff, order=10)
-            dataset[col] = dataset[col + '_lowpass']
-            del dataset[col + '_lowpass']
+        #
+        # for col in periodic_measurements:
+        #     dataset = LowPass.low_pass_filter(
+        #         dataset, col, fs, cutoff, order=10)
+        #     dataset[col] = dataset[col + '_lowpass']
+        #     del dataset[col + '_lowpass']
 
         # We used the optimal found parameter n_pcs = 7, to apply PCA to the final dataset
        

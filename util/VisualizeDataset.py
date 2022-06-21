@@ -117,7 +117,7 @@ class VisualizeDataset:
             self.save(plt)
         else:
             self.save(plt, fig_name= figname)
-        #plt.show(block = False)
+        plt.show()
 
     def plot_xy(self, x, y, method='plot', xlabel=None, ylabel=None, xlim=None, ylim=None, names=None,
                 line_styles=None, loc=None, title=None, fig_name = 'None'):
@@ -147,7 +147,7 @@ class VisualizeDataset:
             self.save(plt, fig_name=figname)
         else:
             self.save(plt)
-        #plt.show(block = False)
+        plt.show()
 
     # This function plots the real and imaginary amplitudes of the frequencies found in the Fourier transformation.
     def plot_fourier_amplitudes(self, freq, ampl_real, ampl_imag):

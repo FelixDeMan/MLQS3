@@ -113,11 +113,12 @@ class NonHierarchicalClustering:
         # Now apply the k-means algorithm
         kmeans = KMeans(n_clusters=k, max_iter=max_iters, n_init=n_inits, random_state=0).fit(temp_dataset)
         # Add the labels to the dataset
-        dataset['cluster'] = kmeans.labels_
+        print( "_".join(str(cols[0]).split('_')[0:2]))
+        dataset[ "_".join(str(cols[0]).split('_')[0:2]) + '_cluster'] = kmeans.labels_
         # Compute the solhouette and add it as well.
         silhouette_avg = silhouette_score(temp_dataset, kmeans.labels_)
         silhouette_per_inst = silhouette_samples(temp_dataset, kmeans.labels_)
-        dataset['silhouette'] = silhouette_per_inst
+        dataset[ "_".join(str(cols[0]).split('_')[0:2]) +'_silhouette'] = silhouette_per_inst
 
         # Reset the module distance function for further usage
         sklearn_euclidian_distances = sklearn_euclidian_distances

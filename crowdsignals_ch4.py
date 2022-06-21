@@ -88,51 +88,53 @@ def main():
   
     if FLAGS.mode == 'final':
 
-        print(float(0.5*60000)/milliseconds_per_instance)
-        ws =  1 #int(float(0.5*60000)/milliseconds_per_instance)
+
+        ws = int(float(2*60000)/milliseconds_per_instance)
         print(ws)
-        fs = 40
+        fs = 1./60.
+        print(fs)
 
         selected_predictor_cols = [c for c in dataset.columns if not 'label' in c]
 
         dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'mean')
         dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'std')
 
-        print('columns = ', dataset.columns)
-        DataViz.plot_dataset(dataset, ['acc_phone_x', 'gyr_phone_x', 'pca_1', 'label'], ['like', 'like', 'like','like'], ['line', 'line',  'line', 'points'])
+
+        DataViz.plot_dataset(dataset, ['acc_phone_x', 'gyr_phone_x', 'mag_phone_x', 'pca_1', 'label'], ['like','like', 'like', 'like','like'], ['line', 'line', 'line',  'line', 'points'])
 
      
         CatAbs = CategoricalAbstraction()
         
-        dataset = CatAbs.abstract_categorical(dataset, ['label'], ['like'], 0.03, int(float(5*60000)/milliseconds_per_instance), 2)
+        dataset = CatAbs.abstract_categorical(dataset, ['label'], ['like'], 0.03, ws, 2)
 
 
-        periodic_predictor_cols = ['acc_phone_x'
-                                    ,'acc_phone_y','acc_phone_z','lin_acc_x', 'lin_acc_y', 'lin_acc_z'
+        periodic_predictor_cols = ['acc_phone_x','acc_phone_y','acc_phone_z','acc_watch_x', 'acc_watch_y', 'acc_watch_z', 'gyr_phone_x', 'gyr_phone_y', 'gyr_phone_z','mag_phone_x', 'mag_phone_y', 'mag_phone_z'
                                    ]
 
 
         
-        dataset = FreqAbs.abstract_frequency(copy.deepcopy(dataset), periodic_predictor_cols, 1, fs)
+        dataset = FreqAbs.abstract_frequency(copy.deepcopy(dataset), periodic_predictor_cols, ws, fs)
 
 
         # Now we only take a certain percentage of overlap in the windows, otherwise our training examples will be too much alike.
 
         # The percentage of overlap we allow
-        window_overlap = 0.9
+        window_overlap = 0.5
         skip_points = int((1-window_overlap) * ws)
         dataset = dataset.iloc[::skip_points,:]
 
 
         dataset.to_csv(DATA_PATH / RESULT_FNAME)
 
-        DataViz.plot_dataset(dataset, ['acc_phone_x', 'gyr_phone_x', 'lin_acc_x',  'pca_1', 'label'], ['like',  'like', 'like', 'like','like'], ['line', 'line',  'line', 'line', 'points'])
+        DataViz.plot_dataset(dataset, ['acc_phone_x', 'gyr_phone_x', 'mag_phone_x',  'pca_1', 'label'], ['like',  'like', 'like', 'like','like'], ['line', 'line',  'line', 'line', 'points'])
+
+
         print("--- %s seconds ---" % (time.time() - start_time))
   
 if __name__ == '__main__':
     # Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mode', type=str, default='final',
+    parser.add_argument('--mode', type=str, default='aggregation',
                         help= "Select what version to run: final, aggregation or freq \
                         'aggregation' studies the effect of several aggeregation methods \
                         'frequency' applies a Fast Fourier transformation to a single variable \
