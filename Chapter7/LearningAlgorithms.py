@@ -198,6 +198,8 @@ class ClassificationAlgorithms:
 
         # Apply the model
         pred_prob_training_y = dtree.predict_proba(train_X)
+        #print("Null count = ", test_X.isnull().sum())
+        #print("Inf count = " , np.isinf(test_X).sum())
         pred_prob_test_y = dtree.predict_proba(test_X)
         pred_training_y = dtree.predict(train_X)
         pred_test_y = dtree.predict(test_X)

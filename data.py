@@ -15,7 +15,7 @@ def unzip_data():
         traffic_df.to_csv('datasets/new_csv/patient_'+ str(i) + '.csv')
 
 
-data = pd.read_csv('chapter4_result_own.csv')
+data = pd.read_csv('chapter5_result_own.csv')
 print(data.isnull().sum())
 print(data.describe(include = 'all'))
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
