@@ -29,7 +29,7 @@ def main():
     # As usual, we set our program constants, read the input file and initialize a visualization object.
     DATA_PATH = Path('')
     DATASET_FNAME = 'chapter4_result_own.csv'
-    RESULT_FNAME = 'chapter5_result_own.csv'
+    RESULT_FNAME = 'chapter5_only_acc.csv'
 
     try:
         dataset = pd.read_csv(DATA_PATH / DATASET_FNAME, index_col=0)
@@ -131,14 +131,14 @@ def main():
         dataset = clusteringNH.k_means_over_instances(dataset, ['acc_phone_x', 'acc_phone_y', 'acc_phone_z'], FLAGS.k, 'default', 50, 50)
 
         #best k = 4
-        dataset = clusteringNH.k_means_over_instances(dataset, ['mag_phone_x', 'mag_phone_y', 'mag_phone_z'], 4,
+        dataset = clusteringNH.k_means_over_instances(dataset, ['mag_phone_x', 'mag_phone_y', 'mag_phone_z'], 6,
                                                       'default', 50, 50)
 
         #best k =5
-        dataset = clusteringNH.k_means_over_instances(dataset, ['gyr_phone_x', 'gyr_phone_y', 'gyr_phone_z'], 5,
+        dataset = clusteringNH.k_means_over_instances(dataset, ['gyr_phone_x', 'gyr_phone_y', 'gyr_phone_z'], 6,
                                                       'default', 50, 50)
         #best k=2
-        dataset = clusteringNH.k_means_over_instances(dataset, ['acc_watch_x', 'acc_watch_y', 'acc_watch_z'], 2,
+        dataset = clusteringNH.k_means_over_instances(dataset, ['acc_watch_x', 'acc_watch_y', 'acc_watch_z'], 6,
                                                       'default', 50, 50)
         #DataViz.plot_clusters_3d(dataset, ['acc_phone_x', 'acc_phone_y', 'acc_phone_z'], 'cluster', ['label'])
         #DataViz.plot_silhouette(dataset, 'cluster', 'silhouette')

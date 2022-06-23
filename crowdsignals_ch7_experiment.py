@@ -9,6 +9,7 @@
 
 import os
 import copy
+import sys
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -30,9 +31,9 @@ from util.VisualizeDataset import VisualizeDataset
 
 # Read the result from the previous chapter, and make sure the index is of the type datetime.
 DATA_PATH = Path('')
-DATASET_FNAME = 'chapter5_result_own.csv'
+DATASET_FNAME = 'chapter5_experiment_setup.csv'
 RESULT_FNAME = 'chapter7_classification_result.csv'
-EXPORT_TREE_PATH = Path('./figures/crowdsignals_ch7_classification/')
+EXPORT_TREE_PATH = Path('./figures/crowdsignals_ch7_experiments/')
 
 # Next, we declare the parameters we'll use in the algorithms.
 N_FORWARD_SELECTION = 50
@@ -81,11 +82,24 @@ print('#basic features: ', len(basic_features))
 print('#PCA features: ', len(pca_features))
 print('#time features: ', len(time_features))
 print('#frequency features: ', len(freq_features))
-cluster_features = [name for name in dataset.columns if 'cluster' in name]
-print('#cluster features: ', len(cluster_features))
-features_after_chapter_3 = list(set().union(basic_features, pca_features))
+acc_cluster_features = ["acc_phone_cluster"]
+print('#acc_phone cluster features: ', len(acc_cluster_features))
+same_cluster_features = [name for name in dataset.columns if '_cluster' in name and '6' in name]
+print('same_cluster_features = ', same_cluster_features)
+
+diff_cluster_features = [name for name in dataset.columns if '_cluster' in name and '6' not in name]
+print('diff_cluster_features = ', diff_cluster_features)
+
+
+
+#features_after_chapter_3
+
 features_after_chapter_4 = list(set().union(basic_features, pca_features, time_features, freq_features))
-features_after_chapter_5 = list(set().union(basic_features, pca_features, time_features, freq_features, cluster_features))
+features_one_cluster = list(set().union(basic_features, pca_features, time_features, freq_features, acc_cluster_features))
+features_same_clusters = list(set().union(basic_features, pca_features, time_features, freq_features,  acc_cluster_features, same_cluster_features))
+features_diff_clusters = list(set().union(basic_features, pca_features, time_features, freq_features, acc_cluster_features, diff_cluster_features))
+
+
 
 
 # # First, let us consider the performance over a selection of features:

@@ -35,14 +35,14 @@ class ClassificationAlgorithms:
     # To improve the speed, one can use a CV of 3 only to make it faster
     # Furthermore, you decrease the number of iteration and increase the learning rate, i.e. 0.001 and use 'adam' as a solver
     # Include n_jobs in the GridSearchCV function and set it to -1 to use all processors which could also increase the speed
-    def feedforward_neural_network(self, train_X, train_y, test_X, hidden_layer_sizes=(100,), max_iter=500, activation='logistic', alpha=0.0001, learning_rate='adaptive', gridsearch=True, print_model_details=False):
+    def feedforward_neural_network(self, train_X, train_y, test_X, hidden_layer_sizes=(100,), max_iter=500, activation='logistic', alpha=0.0001, learning_rate='adaptive', gridsearch=True, print_model_details=True):
 
 
         if gridsearch:
             # With the current parameters for max_iter and Python 3 packages convergence is not always reached, therefore increased +1000.
             tuned_parameters = [{'hidden_layer_sizes': [(5,), (10,), (25,), (100,), (100,5,), (100,10,),], 'activation': [activation],
                                  'learning_rate': [learning_rate], 'max_iter': [2000, 3000], 'alpha': [alpha]}]
-            nn = GridSearchCV(MLPClassifier(), tuned_parameters, cv=5, scoring='accuracy')
+            nn = GridSearchCV(MLPClassifier(), tuned_parameters, cv=5, scoring='accuracy', n_jobs= -1)
         else:
             # Create the model
             nn = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, activation=activation, max_iter=max_iter, learning_rate=learning_rate, alpha=alpha, random_state=42)
@@ -72,7 +72,7 @@ class ClassificationAlgorithms:
     # probabilities associated with each class, each class being represented as a column in the data frame.
     # To improve the speed, one can use a CV of 3 only to make it faster
     # Include n_jobs in the GridSearchCV function and set it to -1 to use all processors which could also increase the speed
-    def support_vector_machine_with_kernel(self, train_X, train_y, test_X, C=1,  kernel='rbf', gamma=1e-3, gridsearch=True, print_model_details=False):
+    def support_vector_machine_with_kernel(self, train_X, train_y, test_X, C=1,  kernel='rbf', gamma=1e-3, gridsearch=True, print_model_details=True):
         # Create the model
         if gridsearch:
             tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],
@@ -105,7 +105,7 @@ class ClassificationAlgorithms:
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
     # To improve the speed, one can use a CV of 3 only to make it faster and use fewer iterations
-    def support_vector_machine_without_kernel(self, train_X, train_y, test_X, C=1, tol=1e-3, max_iter=1000, gridsearch=True, print_model_details=False):
+    def support_vector_machine_without_kernel(self, train_X, train_y, test_X, C=1, tol=1e-3, max_iter=1000, gridsearch=True, print_model_details=True):
         # Create the model
         if gridsearch:
             tuned_parameters = [{'max_iter': [1000, 2000], 'tol': [1e-3, 1e-4],
@@ -143,11 +143,11 @@ class ClassificationAlgorithms:
     # probabilities associated with each class, each class being represented as a column in the data frame.
     # Again, use CV of 3 which will increase the speed of your model
     # Also, usage of n_jobs=-1 could help to increase the speed
-    def k_nearest_neighbor(self, train_X, train_y, test_X, n_neighbors=5, gridsearch=True, print_model_details=False):
+    def k_nearest_neighbor(self, train_X, train_y, test_X, n_neighbors=5, gridsearch=True, print_model_details=True):
         # Create the model
         if gridsearch:
             tuned_parameters = [{'n_neighbors': [1, 2, 5, 10]}]
-            knn = GridSearchCV(KNeighborsClassifier(), tuned_parameters, cv=5, scoring='accuracy')
+            knn = GridSearchCV(KNeighborsClassifier(), tuned_parameters, cv=5, scoring='accuracy', n_jobs= -1)
         else:
             knn = KNeighborsClassifier(n_neighbors=n_neighbors)
 
@@ -177,12 +177,12 @@ class ClassificationAlgorithms:
     # probabilities associated with each class, each class being represented as a column in the data frame.
     # Again, use CV of 3 which will increase the speed of your model
     # Also, usage of n_jobs in GridSearchCV could help to increase the speed
-    def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='gini', print_model_details=False, export_tree_path='./figures/crowdsignals_ch7_classification/', export_tree_name='tree.dot', gridsearch=True):
+    def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='gini', print_model_details=True, export_tree_path='./figures/crowdsignals_ch7_classification/', export_tree_name='tree.dot', gridsearch=True):
         # Create the model
         if gridsearch:
             tuned_parameters = [{'min_samples_leaf': [2, 10, 50, 100, 200],
                                  'criterion':['gini', 'entropy']}]
-            dtree = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, cv=5, scoring='accuracy')
+            dtree = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, cv=5, scoring='accuracy', n_jobs= -1)
         else:
             dtree = DecisionTreeClassifier(min_samples_leaf=min_samples_leaf, criterion=criterion)
 
@@ -248,13 +248,13 @@ class ClassificationAlgorithms:
     # probabilities associated with each class, each class being represented as a column in the data frame.
     # Use CV of 3 to make things faster
     # Use n_jobs = -1 which will make use of all of your processors. This could speed up also the calculation
-    def random_forest(self, train_X, train_y, test_X, n_estimators=10, min_samples_leaf=5, criterion='gini', print_model_details=False, gridsearch=True):
+    def random_forest(self, train_X, train_y, test_X, n_estimators=10, min_samples_leaf=5, criterion='gini', print_model_details=True, gridsearch=True):
 
         if gridsearch:
             tuned_parameters = [{'min_samples_leaf': [2, 10, 50, 100, 200],
                                  'n_estimators':[10, 50, 100],
                                  'criterion':['gini', 'entropy']}]
-            rf = GridSearchCV(RandomForestClassifier(), tuned_parameters, cv=5, scoring='accuracy')
+            rf = GridSearchCV(RandomForestClassifier(), tuned_parameters, cv=5, scoring='accuracy', n_jobs=-1)
         else:
             rf = RandomForestClassifier(n_estimators=n_estimators, min_samples_leaf=min_samples_leaf, criterion=criterion)
 
@@ -451,7 +451,7 @@ class RegressionAlgorithms:
     # Use CV of 3 to make things faster
     # Use n_jobs = -1 which will make use of all of your processors. This could speed up also the calculation
 
-    def random_forest(self, train_X, train_y, test_X, n_estimators=10, min_samples_leaf=5, criterion='mse', print_model_details=False, gridsearch=True):
+    def random_forest(self, train_X, train_y, test_X, n_estimators=10, min_samples_leaf=5, criterion='mse', print_model_details=True, gridsearch=True):
 
         if gridsearch:
             tuned_parameters = [{'min_samples_leaf': [2, 10, 50, 100, 200],

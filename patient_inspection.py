@@ -18,7 +18,7 @@ def drop_columns():
     plt.xticks(rotation = 'vertical')
     plt.show()
     dropped_labels.to_csv('data3.csv')
-
+drop_columns()
 data = pd.read_csv('data3.csv')
 acc_cols = [col for col in data.columns if 'acc' in col]
 gyr_cols = [col for col in data.columns if 'gyr' in col]

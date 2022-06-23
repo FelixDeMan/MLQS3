@@ -174,7 +174,7 @@ class VisualizeDataset:
         xar.plot(data_table.index[~data_table[outlier_col]], data_table[col][~data_table[outlier_col]], 'b+')
         plt.legend(['outlier ' + col, 'no_outlier_' + col], numpoints=1, fontsize='xx-small', loc='upper center',  ncol=2, fancybox=True, shadow=True)
         if k is not None:
-            plt.title("Outliers with K = " + str(k))
+            plt.title("Outliers with C = " + str(k))
         if figname is not None:
             self.save(plt, fig_name= figname + col)
         else:
